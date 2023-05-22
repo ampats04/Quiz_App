@@ -1,133 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app/screens/home.dart';
+import '../screens/home.dart';
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
-
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login App',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: LoginPage(),
+    final inputBorder = BorderRadius.vertical(
+      bottom: Radius.circular(10.0),
+      top: Radius.circular(20.0),
     );
-  }
-}
 
-class LoginPage extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  LoginPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[900],
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Login',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 48.0),
-              TextFormField(
-                controller: _usernameController,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Username/Email',
-                  labelStyle: const TextStyle(color: Colors.white70),
-                  filled: true,
-                  fillColor: Colors.grey[800],
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white70),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _passwordController,
-                style: const TextStyle(color: Colors.white),
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: const TextStyle(color: Colors.white70),
-                  filled: true,
-                  fillColor: Colors.grey[800],
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white70),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 48.0),
-              ElevatedButton(
-                onPressed: () {
-                  // Perform login action
-                  String username = _usernameController.text;
-                  String password = _passwordController.text;
-                  print('Username: $username');
-                  print('Password: $password');
-                  Get.to(const HomePage(
-                    title: 'Question App',
-                  ));
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.deepPurple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24.0),
-              TextButton(
-                onPressed: () {
-                  // Perform forgot password action
-                  print('Forgot password');
-                },
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
+    return FlutterLogin(
+      title: 'ECORP',
+      logo: AssetImage('assets/images/ecorp-lightgreen.png'),
+      onLogin: (_) => Future(() => null),
+      onSignup: (_) => Future(() => null),
+      onSubmitAnimationCompleted: () {
+        Get.to(const HomePage(
+          title: 'Question App',
+        ));
+      },
+      onRecoverPassword: (_) => Future(() => null),
+      theme: LoginTheme(
+        primaryColor: Colors.teal,
+        accentColor: Colors.yellow,
+        errorColor: Colors.deepOrange,
+        titleStyle: TextStyle(
+          color: Colors.greenAccent,
+          fontFamily: 'Quicksand',
+          letterSpacing: 4,
+        ),
+        bodyStyle: TextStyle(
+          fontStyle: FontStyle.italic,
+          decoration: TextDecoration.underline,
+        ),
+        textFieldStyle: TextStyle(
+          color: Colors.orange,
+          shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
+        ),
+        buttonStyle: TextStyle(
+          fontWeight: FontWeight.w800,
+          color: Colors.yellow,
+        ),
+        cardTheme: CardTheme(
+          color: Colors.yellow.shade100,
+          elevation: 5,
+          margin: EdgeInsets.only(top: 15),
+          shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(100.0)),
+        ),
+        inputTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.purple.withOpacity(.1),
+          contentPadding: EdgeInsets.zero,
+          errorStyle: TextStyle(
+            backgroundColor: Colors.orange,
+            color: Colors.white,
           ),
+          labelStyle: TextStyle(fontSize: 12),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue.shade700, width: 4),
+            borderRadius: inputBorder,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue.shade400, width: 5),
+            borderRadius: inputBorder,
+          ),
+          errorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.red.shade700, width: 7),
+            borderRadius: inputBorder,
+          ),
+          focusedErrorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.red.shade400, width: 8),
+            borderRadius: inputBorder,
+          ),
+          disabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 5),
+            borderRadius: inputBorder,
+          ),
+        ),
+        buttonTheme: LoginButtonTheme(
+          splashColor: Colors.purple,
+          backgroundColor: Colors.pinkAccent,
+          highlightColor: Colors.lightGreen,
+          elevation: 9.0,
+          highlightElevation: 6.0,
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          // shape: CircleBorder(side: BorderSide(color: Colors.green)),
+          // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
         ),
       ),
     );
