@@ -4,21 +4,21 @@ import 'package:get/get.dart';
 import 'package:quiz_app/screens/congratulations.dart';
 
 import '../controller/questionController.dart';
-import '../models/question_model.dart';
+import '../models/questionModel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
+
   @override
-  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   late ConfettiController _confettiController;
 
-  final RxList questions = Get.find<QuestionController>().ques;
+  final List<Question> questions = Get.find<QuestionController>().ques;
 
   int currentQuestionIndex = 0;
   Map<int, String> selectedChoices = {};
@@ -49,8 +49,9 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CongratulationsPage(confettiController: _confettiController),
+        builder: (context) => CongratulationsPage(
+          confettiController: _confettiController,
+        ),
       ),
     );
     // Trigger the confetti effect
@@ -60,8 +61,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 3));
+    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
   }
 
   @override
@@ -82,7 +82,6 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -95,10 +94,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16.0),
               Text(
-                Get.find<QuestionController>()
-                    .ques[currentQuestionIndex]
-                    .question
-                    .toString(),
+                Get.find<QuestionController>().ques[currentQuestionIndex].question.toString(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -106,17 +102,14 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 32.0),
               Column(
-                children: Get.find<QuestionController>()
-                    .ques[currentQuestionIndex]
-                    .choices!
-                    .map((choice) {
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: Get.find<QuestionController>().ques[currentQuestionIndex].option!.map((choice) {
                   return Container(
                     margin: EdgeInsets.only(bottom: 8.0),
                     child: ChoiceButton(
                       choice: choice,
-                      isSelected:
-                          selectedChoices.containsKey(currentQuestionIndex) &&
-                              selectedChoices[currentQuestionIndex] == choice,
+                      isSelected: selectedChoices.containsKey(currentQuestionIndex) &&
+                          selectedChoices[currentQuestionIndex] == choice,
                       onPressed: () {
                         selectChoice(choice);
                       },
@@ -136,8 +129,7 @@ class _HomePageState extends State<HomePage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                       ),
                       child: const Text(
                         'Previous',
@@ -148,21 +140,16 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ElevatedButton(
-                    onPressed: currentQuestionIndex < questions.length - 1
-                        ? nextQuestion
-                        : submitTest,
+                    onPressed: currentQuestionIndex < questions.length - 1 ? nextQuestion : submitTest,
                     style: ElevatedButton.styleFrom(
                       primary: Colors.deepPurple,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24.0, vertical: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                     ),
                     child: Text(
-                      currentQuestionIndex < questions.length - 1
-                          ? 'Next'
-                          : 'Submit',
+                      currentQuestionIndex < questions.length - 1 ? 'Next' : 'Submit',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -196,11 +183,11 @@ class ChoiceButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: isSelected ? Colors.deepPurple : Colors.grey[800],
+        backgroundColor: isSelected ? Colors.deepPurple : Colors.grey[800],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       ),
       child: Text(
         choice,

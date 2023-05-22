@@ -7,9 +7,9 @@ import 'package:http/http.dart' as http;
 class userApi {
   var client = http.Client();
 
-  Future<dynamic> login(String username) async {
+  Future<dynamic> login(String username, String apiUrl) async {
     try {
-      var url = Uri.parse(apiConstants.baseUrl);
+      var url = Uri.parse(apiConstants.baseUrl + apiUrl);
       var headers = {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
@@ -32,4 +32,6 @@ class userApi {
       throw Exception("Error $e");
     }
   }
+
+  
 }
