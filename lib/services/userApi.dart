@@ -1,4 +1,4 @@
-import 'package:quiz_app/constants/apiConstants.dart';
+import '../constants/api.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
@@ -9,7 +9,7 @@ class userApi {
 
   Future<dynamic> login(String username, String apiUrl) async {
     try {
-      var url = Uri.parse(apiConstants.baseUrl + apiUrl);
+      var url = Uri.parse(APIConstants.baseUrl + apiUrl);
       var headers = {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',

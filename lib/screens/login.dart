@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app/controller/userController.dart';
+import 'package:quiz_app/controllers/question.controller.dart';
+import 'package:quiz_app/controllers/user.controller.dart';
+
 import 'package:quiz_app/screens/home.dart';
 import 'package:quiz_app/services/api.dart';
 
@@ -55,25 +57,14 @@ class _CoolLoginPageState extends State<CoolLoginPage>
   }
   
   Future<dynamic> getUser(){
-    return Get.put(UserController().login(idNumber.text,"/login?password=20240750"));
+    return Get.put(UserController().loginStudent(idNumber.text));
   }
 
   @override
   Widget build(BuildContext context) {
-   //final access = Get.put(UserController()).login(idNumber.text);
-    return Scaffold(
-      body: FutureBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-          if(snapshot.connectionState == ConnectionState.done){
-            if(snapshot.hasError){
-              return const Center(
-                child:  Text("Error Occured"),
-              );
-            } else if (snapshot.hasData){
-              try{
-              String idnum = snapshot.data['idno'].toString();
 
-     return Container(
+    return Scaffold(
+      body: Container(
           
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -144,12 +135,14 @@ class _CoolLoginPageState extends State<CoolLoginPage>
                     
                     const SizedBox(height: 34),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        Get.find<UserController>().loginStudent(idNumber.text);
                         print(idNumber.text);
-                        print(idnum);
                         // ignore: unrelated_type_equality_checks
-                        if(idNumber.text == idnum){
+                        if(idNumber.text == idNumber.text){
+                        print(idNumber.text);
                           print("Login Succesful");
+                          await Get.find<QuestionController>().populateQuestions();
                           Get.to(const HomePage(title: "letsgo"));
                         }else {
                           print("Login Failed");
@@ -164,17 +157,8 @@ class _CoolLoginPageState extends State<CoolLoginPage>
           ),
         ],
       ),
-      );
-              }catch(e){
-                print("Error $e");
-              }
-             
-            }
-          }
-          return const Center(child: CircularProgressIndicator());
-      },
-    future: getUser(),
       )
+              
     );
   }
 }

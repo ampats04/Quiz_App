@@ -3,8 +3,8 @@ import 'package:confetti/confetti.dart';
 import 'package:get/get.dart';
 import 'package:quiz_app/screens/congratulations.dart';
 
-import '../controller/questionController.dart';
-import '../models/questionModel.dart';
+import '../controllers/question.controller.dart';
+import '../models/question.model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -18,12 +18,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late ConfettiController _confettiController;
 
-  final List<Question> questions = Get.find<QuestionController>().ques;
+  final List<Question> questions = Get.find<QuestionController>().questions;
 
   int currentQuestionIndex = 0;
-  Map<int, String> selectedChoices = {};
+  List selectedChoices = [];
 
   void nextQuestion() {
+    String chosenLetter = questions[currentQuestionIndex].choices[selectedChoices[currentQuestionIndex ]].split('.')[0];
+    print("currentQuestionIndex");
+    print(questions[currentQuestionIndex].qID!);
+    Get.find<QuestionController>().submitAnswer(questions[currentQuestionIndex].qID!, chosenLetter);
     setState(() {
       if (currentQuestionIndex < questions.length - 1) {
         currentQuestionIndex++;
@@ -40,12 +44,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   void selectChoice(String choice) {
+    print(choice);
+    int hi = Get.find<QuestionController>().questions[currentQuestionIndex].choices.indexOf(choice);
+    print(currentQuestionIndex);
     setState(() {
-      selectedChoices[currentQuestionIndex] = choice;
+      selectedChoices[currentQuestionIndex] = hi;
+      print(selectedChoices.toString());
     });
   }
 
-  void submitTest() {
+  void submitTest() async {
+     String result = await Get.find<QuestionController>().checkAnswers();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -61,6 +70,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    selectedChoices = List<int>.filled(questions.length, -1);
     _confettiController = ConfettiController(duration: const Duration(seconds: 3));
   }
 
@@ -94,7 +104,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16.0),
               Text(
-                Get.find<QuestionController>().ques[currentQuestionIndex].question.toString(),
+                Get.find<QuestionController>().questions[currentQuestionIndex].qUESTION!,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -103,13 +113,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 32.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: Get.find<QuestionController>().ques[currentQuestionIndex].option!.map((choice) {
+                children: Get.find<QuestionController>().questions[currentQuestionIndex].choices.map((choice) {
                   return Container(
                     margin: EdgeInsets.only(bottom: 8.0),
                     child: ChoiceButton(
                       choice: choice,
-                      isSelected: selectedChoices.containsKey(currentQuestionIndex) &&
-                          selectedChoices[currentQuestionIndex] == choice,
+                      isSelected: true,
                       onPressed: () {
                         selectChoice(choice);
                       },

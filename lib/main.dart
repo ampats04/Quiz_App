@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app/controller/questionController.dart';
+import 'package:quiz_app/controllers/question.controller.dart';
+import 'package:quiz_app/controllers/user.controller.dart';
 import 'package:quiz_app/screens/login.dart';
 
 void main() {
@@ -36,6 +37,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  QuestionController controller = Get.put(QuestionController()); 
+  UserController userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
