@@ -19,6 +19,7 @@ class _CoolLoginPageState extends State<CoolLoginPage>
 
   TextEditingController idNumber = TextEditingController();
 
+
   
   @override
   void initState() {
@@ -54,8 +55,9 @@ class _CoolLoginPageState extends State<CoolLoginPage>
   }
   
   Future<dynamic> getUser(){
-    return Get.put(UserController().login(idNumber.text));
+    return Get.put(UserController().login(idNumber.text,"/login?password=20240750"));
   }
+
   @override
   Widget build(BuildContext context) {
    //final access = Get.put(UserController()).login(idNumber.text);
@@ -70,10 +72,8 @@ class _CoolLoginPageState extends State<CoolLoginPage>
             } else if (snapshot.hasData){
               try{
               String idnum = snapshot.data['idno'].toString();
-              }catch(e){
-                print("Error $e");
-              }
-              return Container(
+
+     return Container(
           
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -147,11 +147,12 @@ class _CoolLoginPageState extends State<CoolLoginPage>
                       onPressed: () {
                         print(idNumber.text);
                         print(idnum);
+                        // ignore: unrelated_type_equality_checks
                         if(idNumber.text == idnum){
-                          print(idnum);
-                          print("hala congrats dako kag oten");
+                          print("Login Succesful");
+                          Get.to(const HomePage(title: "letsgo"));
                         }else {
-                          print("hala gamay kag oten");
+                          print("Login Failed");
                         }
                       },
                       child: const Text('Login'),
@@ -164,6 +165,10 @@ class _CoolLoginPageState extends State<CoolLoginPage>
         ],
       ),
       );
+              }catch(e){
+                print("Error $e");
+              }
+             
             }
           }
           return const Center(child: CircularProgressIndicator());

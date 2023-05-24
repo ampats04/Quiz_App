@@ -1,12 +1,11 @@
 class User {
-  int? firstname;
+  String? firstname;
   int? id;
   String? idno;
-  int? lastname;
+  String? lastname;
   String? score;
 
-  User(
-      {this.firstname, this.id, this.idno, this.lastname, this.score});
+  User({this.firstname, this.id, this.idno, this.lastname, this.score});
 
   User.fromJson(Map<String, dynamic> json) {
     firstname = json['firstname'];
@@ -17,12 +16,12 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['firstname'] = firstname;
-    data['id'] = id;
-    data['idno'] = idno;
-    data['lastname'] = lastname;
-    data['score'] = score;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['firstname'] = this.firstname;
+    data['id'] = this.id;
+    data['idno'] = this.idno;
+    data['lastname'] = this.lastname;
+    data['score'] = this.score;
     return data;
   }
 }

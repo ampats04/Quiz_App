@@ -9,10 +9,12 @@ import 'package:http/http.dart' as http;
 class UserController extends GetxController{
 
   var client = http.Client();
-  Future login(String username) async{
+
+
+  Future login(String username, String endpoint) async{
 
     try{
-    final url = Uri.parse(apiConstants.baseUrl);
+    final url = Uri.parse(apiConstants.baseUrl + endpoint);
     final headers = {
       'Content-Type': 'aplication/json',
       'Cache-Control': 'no-cache',
